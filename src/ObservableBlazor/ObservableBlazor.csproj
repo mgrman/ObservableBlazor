@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <Version>0.1.0</Version>
+    <PackageVersion>0.1.0</PackageVersion>
+
+    <Description>Observable Blazor library provides way of tracking observable subscriptions in Blazor via it's ObservableBlazor component.</Description>
+    <Authors>Martin Grman</Authors>
+    <Company></Company>
+    <Copyright>Copyright 2020 Martin Grman</Copyright>
+    <RepositoryUrl>https://github.com/mgrman/ObservableBlazor</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <OutputType>Library</OutputType>
+    <IsPackable>true</IsPackable>
+    <LangVersion>8.0</LangVersion>
+    <RazorLangVersion>3.0</RazorLangVersion>
+    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.1.2" />
+  </ItemGroup>
+</Project>

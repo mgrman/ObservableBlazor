@@ -29,6 +29,3 @@ app.MapRazorComponents<App>()
     .AddAdditionalAssemblies(typeof(ObservableBlazor.Example.Client._Imports).Assembly);
 
 app.Run();
-
-
-#error add azure deployment and nuget and set up GH Action variables instead of envs in the ghaction itself

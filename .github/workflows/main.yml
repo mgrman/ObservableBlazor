@@ -16,13 +16,13 @@ jobs:
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '${{env.DOTNET_VERSION}}'
+          dotnet-version: '${{vars.DOTNET_VERSION}}'
 
       - name: Build with dotnet
-        run: dotnet build --configuration Release
+        run: dotnet build "${{vars.PROJECT_WEB_APP_PATH}}" -c Release
 
       - name: dotnet publish
-        run: dotnet publish "${{env.PROJECT_WEB_APP_PATH}}" -c Release -o "${{env.DOTNET_ROOT}}/myapp"
+        run: dotnet publish "${{vars.PROJECT_WEB_APP_PATH}}" -c Release -o "${{env.DOTNET_ROOT}}/myapp"
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -50,9 +50,9 @@ jobs:
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '${{env.DOTNET_VERSION}}'
+          dotnet-version: '${{vars.DOTNET_VERSION}}'
 
-      - run: dotnet pack "${{env.PROJECT_NUGET_PATH}}" -c Release -o "${{env.DOTNET_ROOT}}/nuget" -p:PackageVersion=0.1.${{ steps.version.outputs.VERSION }}-pre -p:AssemblyVersion=0.1.${{ steps.version.outputs.VERSION }} -p:FileVersion=0.1.${{ steps.version.outputs.VERSION }}
+      - run: dotnet pack "${{vars.PROJECT_NUGET_PATH}}" -c Release -o "${{env.DOTNET_ROOT}}/nuget" -p:PackageVersion=0.1.${{ steps.version.outputs.VERSION }}-pre -p:AssemblyVersion=0.1.${{ steps.version.outputs.VERSION }} -p:FileVersion=0.1.${{ steps.version.outputs.VERSION }}
 
       - uses: actions/upload-artifact@v4
         with:
@@ -74,21 +74,18 @@ jobs:
         with:
           name: .net-app
 
-      - run: echo "TESTSECRETNAME = ${{ env.TESTSECRETNAME }}"
-      - run: echo "secret.TESTSECRETNAME = '${{ secrets[env.TESTSECRETNAME] }}'"
-
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets[env.AZUREAPPSERVICE_CLIENTID] }}
-          tenant-id: ${{ secrets[env.AZUREAPPSERVICE_TENANTID] }}
-          subscription-id: ${{ secrets[env.AZUREAPPSERVICE_SUBSCRIPTIONID] }}
+          client-id: ${{ secrets[vars.AZUREAPPSERVICE_CLIENTID] }}
+          tenant-id: ${{ secrets[vars.AZUREAPPSERVICE_TENANTID] }}
+          subscription-id: ${{ secrets[vars.AZUREAPPSERVICE_SUBSCRIPTIONID] }}
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: '${{env.AZURE_DEMO_APP_NAME}}'
+          app-name: '${{vars.AZURE_DEMO_APP_NAME}}'
           slot-name: 'Production'
           package: .
 

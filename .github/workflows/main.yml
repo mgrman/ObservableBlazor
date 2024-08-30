@@ -74,6 +74,9 @@ jobs:
         with:
           name: .net-app
 
+      - run: echo "TESTSECRETNAME = ${{ env.TESTSECRETNAME }}"
+      - run: echo "secret.TESTSECRETNAME = '${{ secrets[env.TESTSECRETNAME] }}'"
+
       - name: Login to Azure
         uses: azure/login@v2
         with:

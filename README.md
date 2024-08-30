@@ -2,7 +2,7 @@
 Provides way of tracking observable subscriptions in Blazor.
 
 # Demo
-[Demo available as GitHub page](https://mgrman.github.io/ObservableBlazor/)
+[Demo available here](https://observableblazor.azurewebsites.net/)
 
 # Overview
 The main logic is handled in ObservableSection Component.
@@ -23,4 +23,4 @@ This subscribes to the observable (if it is used first time) and returns the las
 ```
 
 [The example project](https://github.com/mgrman/ObservableBlazor/tree/master/src/ObservableBlazor.Example) contains the sample Blazor App with reimplemented the Counter and FetchData pages using observables.
-The Index page is extended with demo of observables of observables (user manipulation of simple tree structure), [see TreeItemCard for more](https://github.com/mgrman/ObservableBlazor/blob/master/src/ObservableBlazor.Example/Shared/TreeItemCard.razor).
+The Index page is extended with demo of observables of observables (user manipulation of simple tree structure), [see TreeItemCard for more](https://github.com/mgrman/ObservableBlazor/blob/master/src/ObservableBlazor.Example/ObservableBlazor.Example.Client/Pages/TreeItemCard.razor).

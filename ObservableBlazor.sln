@@ -1,12 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30128.36
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35111.106
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2C8846F0-D10E-4590-8A33-37F223272006}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ObservableBlazor.Example", "src\ObservableBlazor.Example\ObservableBlazor.Example.csproj", "{8D5A5E98-F76D-4A4B-8451-37C59B4BDBA1}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ObservableBlazor", "src\ObservableBlazor\ObservableBlazor.csproj", "{8B4BB5A0-2152-4066-9C45-86ED5DDD9568}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D8A84643-7BA5-44D4-BCA4-CD410E58C5F5}"
@@ -14,27 +10,31 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObservableBlazor.Example", "src\ObservableBlazor.Example\ObservableBlazor.Example\ObservableBlazor.Example.csproj", "{3237D6E5-F3B6-4571-8C84-AFB4CB12DCA3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObservableBlazor.Example.Client", "src\ObservableBlazor.Example\ObservableBlazor.Example.Client\ObservableBlazor.Example.Client.csproj", "{ADAA0C95-B7AB-41CC-A603-27EBB47A8A87}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{8D5A5E98-F76D-4A4B-8451-37C59B4BDBA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8D5A5E98-F76D-4A4B-8451-37C59B4BDBA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8D5A5E98-F76D-4A4B-8451-37C59B4BDBA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8D5A5E98-F76D-4A4B-8451-37C59B4BDBA1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8B4BB5A0-2152-4066-9C45-86ED5DDD9568}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8B4BB5A0-2152-4066-9C45-86ED5DDD9568}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B4BB5A0-2152-4066-9C45-86ED5DDD9568}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B4BB5A0-2152-4066-9C45-86ED5DDD9568}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3237D6E5-F3B6-4571-8C84-AFB4CB12DCA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3237D6E5-F3B6-4571-8C84-AFB4CB12DCA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3237D6E5-F3B6-4571-8C84-AFB4CB12DCA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3237D6E5-F3B6-4571-8C84-AFB4CB12DCA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADAA0C95-B7AB-41CC-A603-27EBB47A8A87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADAA0C95-B7AB-41CC-A603-27EBB47A8A87}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADAA0C95-B7AB-41CC-A603-27EBB47A8A87}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADAA0C95-B7AB-41CC-A603-27EBB47A8A87}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{8D5A5E98-F76D-4A4B-8451-37C59B4BDBA1} = {2C8846F0-D10E-4590-8A33-37F223272006}
-		{8B4BB5A0-2152-4066-9C45-86ED5DDD9568} = {2C8846F0-D10E-4590-8A33-37F223272006}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {422C36E5-468E-485E-A796-5CC44D562F9E}

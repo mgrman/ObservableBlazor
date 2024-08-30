@@ -1,0 +1,113 @@
+name: Build and deploy Nuget package and Demo web app
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  buildServer:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '${{env.DOTNET_VERSION}}'
+
+      - name: Build with dotnet
+        run: dotnet build --configuration Release
+
+      - name: dotnet publish
+        run: dotnet publish "${{env.PROJECT_WEB_APP_PATH}}" -c Release -o "${{env.DOTNET_ROOT}}/myapp"
+
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v4
+        with:
+          name: .net-app
+          path: "${{env.DOTNET_ROOT}}/myapp"
+
+  buildNuget:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+
+      - run: echo "VERSION=$(git rev-list --count HEAD)" >> $GITHUB_OUTPUT
+        shell: bash
+        id: version
+
+      - name: Use the version
+        run: |
+          echo ${{ steps.version.outputs.VERSION }}
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '${{env.DOTNET_VERSION}}'
+
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v4
+        with:
+          name: .net-app
+          path: "${{env.DOTNET_ROOT}}/myapp"
+
+      - run: dotnet pack "${{env.PROJECT_NUGET_PATH}}" -c Release -o "${{env.DOTNET_ROOT}}/nuget" -p:PackageVersion=0.1.${{ steps.version.outputs.VERSION }}-pre -p:AssemblyVersion=0.1.${{ steps.version.outputs.VERSION }} -p:FileVersion=0.1.${{ steps.version.outputs.VERSION }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nuget
+          path: ${{env.DOTNET_ROOT}}/nuget/*.nupkg
+
+  deployServer:
+    runs-on: windows-latest
+    needs: buildServer
+    environment:
+      name: 'Production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+    permissions:
+      id-token: write #This is required for requesting the JWT
+
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: .net-app
+
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ ${{ secrets[env.AZUREAPPSERVICE_CLIENTID] }} }}
+          tenant-id: ${{ secrets[env.AZUREAPPSERVICE_TENANTID] }}
+          subscription-id: ${{ secrets[env.AZUREAPPSERVICE_SUBSCRIPTIONID] }}
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: '${{env.AZURE_DEMO_APP_NAME}}'
+          slot-name: 'Production'
+          package: .
+
+  deployNuget:
+    runs-on: windows-latest
+    needs: buildNuget
+
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: nuget
+          path: ${{ github.workspace}}/nuget
+
+      - name: Publish NuGet package
+        run: |
+          foreach($file in (Get-ChildItem "${{ github.workspace}}/nuget" -Recurse -Include *.nupkg)) {
+              dotnet nuget push $file --api-key "${{ secrets.NUGET_APIKEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
+          }

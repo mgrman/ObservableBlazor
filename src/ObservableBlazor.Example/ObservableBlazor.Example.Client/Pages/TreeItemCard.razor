@@ -1,0 +1,62 @@
+﻿@page "/tree"
+@rendermode InteractiveAuto
+
+<PageTitle>Tree</PageTitle>
+
+<h1>Tree</h1>
+
+@if (Value != null)
+{
+    <ObservableSection>
+        <div class="card">
+            <div class="card-header">
+                <input type="text" class="form-control" placeholder="<title of tree item>" value="@Value?.Name.Bind(context)" @onchange="@Value?.Name.Set(context)">
+            </div>
+            <div class="card-body">
+                <ul class="list-group">
+                    @foreach (var metadata in Value?.Metadata.Bind(context) ?? Enumerable.Empty<ISubject<string>>())
+                    {
+                        <li class="list-group-item">
+                            <button @onclick="() => Value?.RemoveMetadataItem(metadata)" class="btn btn-danger">
+                                Remove
+                            </button>
+                            <input type="text" class="form-control" placeholder="<metadata value>" value="@metadata?.Bind(context)" @onchange="@metadata?.Set(context)">
+                        </li>
+                    }
+                    <button @onclick="() => Value?.AddMetadataItem()" class="btn btn-success">
+                        Add metadata
+                    </button>
+                </ul>
+                <ul class="list-group">
+                    @foreach (var child in Value?.Children.Bind(context) ?? Enumerable.Empty<TreeItem>())
+                    {
+                        <li class="list-group-item">
+                            <button @onclick="() => Value?.RemoveChild(child)" class="btn btn-danger">
+                                Remove
+                            </button>
+                            <TreeItemCard Value="child" />
+                        </li>
+                    }
+                    <button @onclick="() => Value?.AddChild(new TreeItem())" class="btn btn-success">
+                        Add child
+                    </button>
+                </ul>
+            </div>
+            <div class="card-footer">
+            </div>
+        </div>
+    </ObservableSection>
+}
+else
+{
+    <div class="card">
+        <div class="card-header">
+            null
+        </div>
+    </div>
+}
+
+@code{
+    [Parameter]
+    public TreeItem Value { get; set; } = new TreeItem();
+}

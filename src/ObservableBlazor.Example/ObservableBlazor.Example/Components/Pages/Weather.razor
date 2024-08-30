@@ -1,0 +1,78 @@
+﻿@page "/weather"
+@attribute [StreamRendering]
+
+<PageTitle>Weather</PageTitle>
+
+<h1>Weather</h1>
+
+<p>This component demonstrates showing data.</p>
+
+<ObservableSection>
+    @if (forecasts.Bind(context) == null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Temp. (C)</th>
+                    <th>Temp. (F)</th>
+                    <th>Summary</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var forecast in forecasts.Bind(context)!)
+                {
+                    <tr>
+                        <td>@forecast.Date.ToShortDateString()</td>
+                        <td>@forecast.TemperatureC</td>
+                        <td>@forecast.TemperatureF</td>
+                        <td>@forecast.Summary</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+</ObservableSection>
+
+@code {
+    private ISubject<IReadOnlyList<WeatherForecast>> forecasts = new Subject<IReadOnlyList<WeatherForecast>>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var startDate = DateOnly.FromDateTime(DateTime.Now);
+        var summaries = new[] { "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching" };
+
+        var forecastList = new List<WeatherForecast>();
+
+        foreach (var i in Enumerable.Range(1, 5))
+        {
+            await Task.Delay(500);
+
+            var newForecast = new WeatherForecast
+            {
+                Date = startDate.AddDays(i),
+                TemperatureC = Random.Shared.Next(-20, 55),
+                Summary = summaries[Random.Shared.Next(summaries.Length)]
+            };
+            forecastList.Add(newForecast);
+
+            forecasts.OnNext(forecastList);
+        }
+    }
+
+    public class WeatherForecast
+    {
+        public required DateOnly Date { get; set; }
+
+        public required int TemperatureC { get; set; }
+
+        public required string Summary { get; set; }
+
+        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+    }
+}
